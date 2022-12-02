@@ -5,14 +5,15 @@ export const tree = {
   avatar: avatarPersonnel,
   department: '',
   name: 'Henry monger',
-  title: 'Manager',
   membership: {
     type: 'convention_in_progress',
     label: 'Conventionnement en cours'
   },
   hasChild: true,
   hasParent: true,
-  nbContract: 4,
+  isCurrent: true,
+  nbContracts: 4,
+  nbSponsors: 10,
   totalReports: 3,
   children: [],
 }
@@ -23,11 +24,11 @@ export const tree1 = [
     avatar: avatarPersonnel,
     department: '',
     name: 'Tomasz polaski',
-    title: 'IT Specialist',
     totalReports: 4,
     hasChild: true,
     hasParent: true,
-    nbContract: 8,
+    nbContracts: 8,
+    nbSponsors: 4,
     membership: {
       type: 'member',
       label: 'Adhérent'

@@ -6,6 +6,7 @@ const exportOrgChartPdf = require('./exportOrgChartPdf')
 const onClick = require('./onClick')
 const iconLink = require('./components/iconLink')
 const supervisorIcon = require('./components/supervisorIcon')
+
 const CHART_NODE_CLASS = 'org-chart-node'
 const PERSON_LINK_CLASS = 'org-chart-person-link'
 const PERSON_NAME_CLASS = 'org-chart-person-name'
@@ -85,12 +86,25 @@ function render(config) {
     .append('rect')
     .attr('class', d => (d.isHighlight ? `${PERSON_HIGHLIGHT} box` : 'box'))
     .attr('width', nodeWidth)
-    .attr('height', nodeHeight)
+    .attr('height', nodeHeight - 40)
     .attr('id', d => d.id)
     .attr('fill', backgroundColor)
     .attr('stroke', borderColor)
     .attr('rx', nodeBorderRadius)
     .attr('ry', nodeBorderRadius)
+    .style('cursor', helpers.getCursorForNode)
+
+  nodeEnter
+    .append('rect')
+    .attr('width', nodeWidth + 12)
+    .attr('height', nodeHeight - 40 + 12)
+    .attr('x', -6)
+    .attr('y', -6)
+    .attr('fill', 'transparent')
+    .attr('stroke', d => d.isCurrent ? '#50BD89': 'transparent')
+    .attr('stroke-width', 4)
+    .attr('rx', 24)
+    .attr('ry', 24)
     .style('cursor', helpers.getCursorForNode)
 
   const namePos = {
@@ -124,7 +138,7 @@ function render(config) {
     .style('font-size', 12)
     .style('cursor', 'pointer')
     .style('fill', titleColor)
-    .text(d => d.title)
+    .text(helpers.getTextForSponsors)
 
   // Person's Title
   nodeEnter
@@ -141,11 +155,14 @@ function render(config) {
 
   // Person's circle
   nodeEnter
-    .append('circle')
-    .attr('cx', nodeWidth / 2)
-    .attr('cy', namePos.y + ( nodePaddingY * 2 )+ heightForTitle + 7)
-    .attr('fill', '#fff')
-    .attr('r', 20)
+    .append('rect')
+    .attr('width', 40)
+    .attr('height', 40)
+    .attr('rx', 16)
+    .attr('ry', 16)
+    .attr('x', (nodeWidth / 2) - 20)
+    .attr('y', namePos.y + ( nodePaddingY * 2 )+ heightForTitle + 7 - 20 )
+    .attr('fill', (d) => d.totalReports ? '#fff' : 'transparent')
 
   // Person's Reports
   nodeEnter

@@ -5,6 +5,7 @@ module.exports = {
   getColorForMembership,
   getBackgroundColorForMembership,
   getTextForContract,
+  getTextForSponsors,
 }
 
 function getTextForTitle(datum) {
@@ -24,7 +25,11 @@ function getCursorForNode(datum) {
 }
 
 function getTextForContract(datum) {
-  return datum.nbContract ? `${datum.nbContract} contrat(s)` : 'Pas de contrat'
+  return datum.nbContracts ? `${datum.nbContracts} contrat(s)` : 'Pas de contrat'
+}
+
+function getTextForSponsors(datum) {
+  return datum.nbSponsors ? `${datum.nbSponsors} parrain(s)` : 'Pas de parrain'
 }
 function getTextForMembership(datum) {
   return datum.membership && datum.membership.label

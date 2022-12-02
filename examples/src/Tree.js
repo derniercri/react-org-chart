@@ -4,7 +4,7 @@ export const tree = {
   id: 100,
   avatar: avatarPersonnel,
   department: '',
-  name: 'Henry monger',
+  name: 'Hendy kinger super long lonpojf aef af af adf',
   membership: {
     type: 'convention_in_progress',
     label: 'Conventionnement en cours'
@@ -159,7 +159,7 @@ export const tree4 = [
 
     avatar: avatarPersonnel,
     department: '',
-    name: 'Hendy kinger',
+    name: 'Hendy kinger super long lonpojf aef af af adf ',
     title: 'Manager',
     totalReports: 0,
 

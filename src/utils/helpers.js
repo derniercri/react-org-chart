@@ -6,6 +6,7 @@ module.exports = {
   getBackgroundColorForMembership,
   getTextForContract,
   getTextForSponsors,
+  getTitle,
 }
 
 function getTextForTitle(datum) {
@@ -33,6 +34,9 @@ function getTextForSponsors(datum) {
 }
 function getTextForMembership(datum) {
   return datum.membership && datum.membership.label
+}
+function getTitle(d) {
+  return d.name.length > 25 ? d.name.slice(0,25) + '...' : d.name
 }
 
 const membershipColor = {

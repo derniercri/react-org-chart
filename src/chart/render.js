@@ -126,14 +126,24 @@ function render(config) {
     .style('cursor', 'pointer')
     .style('fill', nameColor)
     .style('font-size', 14)
-    .text(d => d.name)
-  // .on('click', onParentClick(config))
+    .text(helpers.getTitle)
 
   // Person's Title
   nodeEnter
+    .append('svg')
+    .attr('viewBox', '0 0 14 10')
+    .attr('width', '15')
+    .attr('height', '15')
+    .attr('x', namePos.x)
+    .attr('y', namePos.y + nodePaddingY - 12)
+    .append('path')
+    .attr('d', 'M7 2.3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm3-.6A1.7 1.7 0 1 0 10 5a1.7 1.7 0 0 0 0-3.3Zm-1.4 5a2 2 0 0 0-1.8-1H3.2a2 2 0 0 0-1.8 1l-1 2a.7.7 0 0 0 .6 1h8a.7.7 0 0 0 .6-1l-1-2Zm4.4.7.6 1.3a.7.7 0 0 1-.6 1h-2.1c.2-.5.1-1.1-.1-1.6l-.9-1.8h1.3A2 2 0 0 1 13 7.4Z')
+    .attr('fill', "#3367CD")
+
+  nodeEnter
     .append('text')
     .attr('class', PERSON_TITLE_CLASS + ' unedited')
-    .attr('x', namePos.x)
+    .attr('x', namePos.x + 20)
     .attr('y', namePos.y + nodePaddingY)
     .style('font-size', 12)
     .style('cursor', 'pointer')
@@ -142,9 +152,21 @@ function render(config) {
 
   // Person's Title
   nodeEnter
+    .append('svg')
+    .attr('viewBox', '0 0 12 14')
+    .attr('width', '15')
+    .attr('height', '15')
+    .attr('x', namePos.x)
+    .attr('y', namePos.y + nodePaddingY*2 - 12)
+    .append('path')
+    .attr('d', 'M2 .3h8c.7 0 1.3.6 1.3 1.4V9c0 .4-.1.7-.4 1l-3.2 3.2c-.2.2-.6.4-1 .4H2c-.7 0-1.3-.6-1.3-1.4V1.7C.7.9 1.3.3 2 .3ZM3 3c-.2 0-.3.1-.3.3V4c0 .2.1.3.3.3h6c.2 0 .3-.1.3-.3v-.7c0-.2-.1-.3-.3-.3H3Zm3.3 4H3a.3.3 0 0 1-.3-.3V6c0-.2.1-.3.3-.3h3.3c.2 0 .4.1.4.3v.7c0 .2-.2.3-.4.3Zm.4 2.7v2.8L10 9H7.3c-.3 0-.6.3-.6.7Z')
+    .attr('fill', "#3367CD")
+
+  // Person's Title
+  nodeEnter
     .append('text')
     .attr('class', PERSON_TITLE_CLASS + ' unedited')
-    .attr('x', namePos.x)
+    .attr('x', namePos.x + 20 )
     .attr('y', namePos.y + nodePaddingY * 2)
     .style('font-size', 12)
     .style('cursor', 'pointer')

@@ -80,19 +80,6 @@ function render(config) {
     .attr('transform', `translate(${parentNode.x0}, ${parentNode.y0})`)
     .on('click', onClick(config))
 
-  // Person Card Shadow
-  nodeEnter
-    .append('rect')
-    .attr('width', nodeWidth)
-    .attr('height', nodeHeight)
-    .attr('fill', backgroundColor)
-    .attr('stroke', borderColor)
-    .attr('rx', nodeBorderRadius)
-    .attr('ry', nodeBorderRadius)
-    .attr('fill-opacity', 0.05)
-    .attr('stroke-opacity', 0.025)
-    .attr('filter', 'url(#boxShadow)')
-
   // Person Card Container
   nodeEnter
     .append('rect')
@@ -107,13 +94,13 @@ function render(config) {
     .style('cursor', helpers.getCursorForNode)
 
   const namePos = {
-    x: nodeWidth / 2,
+    x: nodePaddingX,
     y: nodePaddingY * 1.8 + avatarWidth,
   }
 
   const avatarPos = {
-    x: nodeWidth / 2 - avatarWidth / 2,
-    y: nodePaddingY / 2,
+    x: nodeWidth / 2,
+    y: nodePaddingY,
   }
 
   // Person's Name
@@ -122,71 +109,99 @@ function render(config) {
     .attr('class', PERSON_NAME_CLASS + ' unedited')
     .attr('x', namePos.x)
     .attr('y', namePos.y)
-    .attr('dy', '.3em')
     .style('cursor', 'pointer')
     .style('fill', nameColor)
     .style('font-size', 14)
-    .text(d => d.person.name)
+    .text(d => d.name)
   // .on('click', onParentClick(config))
 
   // Person's Title
   nodeEnter
     .append('text')
     .attr('class', PERSON_TITLE_CLASS + ' unedited')
-    .attr('x', nodeWidth / 2)
-    .attr('y', namePos.y + nodePaddingY * 2.4)
-    .attr('dy', '0.1em')
+    .attr('x', namePos.x)
+    .attr('y', namePos.y + nodePaddingY)
     .style('font-size', 12)
     .style('cursor', 'pointer')
     .style('fill', titleColor)
-    .text(d => d.person.title)
+    .text(d => d.title)
 
-  const heightForTitle = 60 // getHeightForText(d.person.title)
+  // Person's Title
+  nodeEnter
+    .append('text')
+    .attr('class', PERSON_TITLE_CLASS + ' unedited')
+    .attr('x', namePos.x)
+    .attr('y', namePos.y + nodePaddingY * 2)
+    .style('font-size', 12)
+    .style('cursor', 'pointer')
+    .style('fill', titleColor)
+    .text(helpers.getTextForContract)
+
+  const heightForTitle = 60 // getHeightForText(d.title)
+
+  // Person's circle
+  nodeEnter
+    .append('circle')
+    .attr('cx', nodeWidth / 2)
+    .attr('cy', namePos.y + ( nodePaddingY * 2 )+ heightForTitle + 7)
+    .attr('fill', '#fff')
+    .attr('r', 20)
 
   // Person's Reports
   nodeEnter
     .append('text')
     .attr('class', PERSON_REPORTS_CLASS)
-    .attr('x', nodePaddingX + 8)
-    .attr('y', namePos.y + nodePaddingY + heightForTitle)
+    .attr('x', nodeWidth / 2)
+    .attr('y', namePos.y + ( nodePaddingY * 2 )+ heightForTitle)
     .attr('dy', '.9em')
     .style('font-size', 14)
-    .style('font-weight', 400)
+    .style('font-weight', 700)
     .style('cursor', 'pointer')
     .style('fill', reportsColor)
+    .attr('text-anchor', 'middle')
     .text(helpers.getTextForTitle)
 
-  // Person's Avatar
+  // Person's membership background
   nodeEnter
-    .append('image')
-    .attr('id', d => `image-${d.id}`)
-    .attr('width', avatarWidth)
-    .attr('height', avatarWidth)
+    .append('rect')
+    .attr('class', d => (d.isHighlight ? `${PERSON_HIGHLIGHT} box` : 'box'))
+    .attr('width', 185)
+    .attr('height', 26)
+    .attr('fill', helpers.getBackgroundColorForMembership)
+    .attr('rx', 13)
+    .attr('ry', 13)
+    .attr('x', nodeWidth / 2 - 185 / 2)
+    .attr('y', avatarPos.y - 5 )
+    .attr('dy', '.9em')
+
+
+  // Person's membership
+  nodeEnter
+    .append('text')
     .attr('x', avatarPos.x)
     .attr('y', avatarPos.y)
-    .attr('stroke', borderColor)
-    .attr('s', d => {
-      d.person.hasImage
-        ? d.person.avatar
-        : loadImage(d).then(res => {
-            covertImageToBase64(res, function(dataUrl) {
-              d3.select(`#image-${d.id}`).attr('href', dataUrl)
-              d.person.avatar = dataUrl
-            })
-            d.person.hasImage = true
-            return d.person.avatar
-          })
-    })
-    .attr('src', d => d.person.avatar)
-    .attr('href', d => d.person.avatar)
-    .attr('clip-path', 'url(#avatarClip)')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '.9em')
+    .text(helpers.getTextForMembership)
+    .attr('fill', helpers.getColorForMembership)
+
+
+  // Ligne
+  nodeEnter
+    .append('line')
+    .attr('x1', '0')
+    .attr('y1', avatarPos.y + 32)
+    .attr('x2', nodeWidth)
+    .attr('y2', avatarPos.y + 32)
+    .attr('stroke', '#EEEEEE')
+
 
   // Person's Link
   const nodeLink = nodeEnter
     .append('a')
     .attr('class', PERSON_LINK_CLASS)
-    .attr('display', d => (d.person.link ? '' : 'none'))
-    .attr('xlink:href', d => d.person.link)
+    .attr('display', d => (d.link ? '' : 'none'))
+    .attr('xlink:href', d => d.link)
     .on('click', datum => {
       d3.event.stopPropagation()
       // TODO: fire link click handler
@@ -223,10 +238,6 @@ function render(config) {
   // Update the links
   const link = svg.selectAll('path.link').data(links, d => d.target.id)
 
-  // Wrap the title texts
-  const wrapWidth = 124
-  svg.selectAll('text.unedited.' + PERSON_NAME_CLASS).call(wrapText, wrapWidth)
-  svg.selectAll('text.unedited.' + PERSON_TITLE_CLASS).call(wrapText, wrapWidth)
 
   // Render lines connecting nodes
   renderLines(config)

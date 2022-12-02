@@ -2,8 +2,8 @@ const animationDuration = 350
 const shouldResize = true
 
 // Nodes
-const nodeWidth = 140
-const nodeHeight = 180
+const nodeWidth = 235
+const nodeHeight = 147
 const nodeSpacing = 12
 const nodePaddingX = 16
 const nodePaddingY = 16
@@ -23,9 +23,9 @@ const lineDepthY = 120 /* Height of the line for child nodes */
 // Colors
 const backgroundColor = '#fff'
 const borderColor = '#c9c9c9'
-const nameColor = '#222d38'
-const titleColor = '#617080'
-const reportsColor = '#92A0AD'
+const nameColor = '#3367CD'
+const titleColor = '#8D8D8D'
+const reportsColor = nameColor
 
 const config = {
   margin,

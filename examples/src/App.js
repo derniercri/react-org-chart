@@ -12,7 +12,7 @@ export default class App extends React.Component {
     this.state = {
       tree: tree,
       downloadingChart: false,
-      config: {},
+      config: {nodeBorderRadius: 24, borderColor: 'transparent'},
       highlightPostNumbers: [1],
     }
   }
@@ -36,14 +36,13 @@ export default class App extends React.Component {
     if (d.id === 100) {
       return {
         id: 500,
-        person: {
-          id: 500,
+
           avatar: avatarPersonnel,
           department: '',
           name: 'Pascal ruth',
           title: 'Member',
           totalReports: 1,
-        },
+
         hasChild: false,
         hasParent: true,
         children: [d],
@@ -51,14 +50,13 @@ export default class App extends React.Component {
     } else if (d.id === 500) {
       return {
         id: 1,
-        person: {
-          id: 1,
+
           avatar: avatarPersonnel,
           department: '',
           name: 'Bryce joe',
           title: 'Director',
           totalReports: 1,
-        },
+
         hasChild: false,
         hasParent: false,
         children: [d],
@@ -122,6 +120,7 @@ export default class App extends React.Component {
               {downloadingChart && <div>Downloading chart</div>}
             </div>
             <OrgChart
+              {...this.state.config}
               tree={tree}
               downloadImageId={downloadImageId}
               downloadPdfId={downloadPdfId}
